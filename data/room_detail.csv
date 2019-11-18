@@ -1,0 +1,6 @@
+RoomID,RoomName,RoomType,TypeID,GroupSize,BedSize,IsPet,IsSmoke,IsService,Adult,Child,Price,RoomAmount
+1,"Room A",A,1,1,"1 Queen Size",true,true,true,1,0,1000,10
+2,"Room B",B,2,2,"1 King Size",false,true,true,2,1,1500,20
+3,"Room C",C,3,2,"1 King Size",false,false,true,2,1,1500,20
+4,"Room D",D,4,4,"2 King Size",false,false,true,4,2,3000,10
+5,"Room E",E,4,4,"2 King Size",true,true,true,4,2,4500,5
