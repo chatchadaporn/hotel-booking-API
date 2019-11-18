@@ -3,8 +3,11 @@ package booking
 import (
 	"encoding/json"
 	"net/http"
+	"os"
 
 	"booking-service/commons"
+
+	"github.com/gocarina/gocsv"
 )
 
 type BookingDetail struct {
@@ -25,14 +28,33 @@ type BookingDetail struct {
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
+	bookingLogFile, err := os.OpenFile("../../../data/booking_log.csv", os.O_APPEND|os.O_WRONLY, os.ModePerm)
+
+	if err != nil {
+		bookingLogFile, err = os.OpenFile("../../../data/booking_log.csv", os.O_CREATE|os.O_WRONLY, os.ModePerm)
+		if err != nil {
+			panic(err)
+		}
+		initFile := []*commons.Room{}
+		gocsv.MarshalFile(&initFile, bookingLogFile)
+	}
+	defer bookingLogFile.Close()
+
 	res := &commons.Response{}
 
 	decoder := json.NewDecoder(r.Body)
 	bookingDetail := BookingDetail{}
-	err := decoder.Decode(bookingDetail)
+
+	err = decoder.Decode(bookingDetail)
 	if err != nil {
 		res.Fail(http.StatusInternalServerError, 500, err.Error())
 	}
+
+	err = gocsv.MarshalWithoutHeaders(&bookingDetail.RoomDetail, bookingLogFile)
+	if err != nil {
+		panic(err)
+	}
+	bookingDetail.BookingStatus = "Success"
 
 	w.WriteHeader(http.StatusOK)
 	res.Success("OK", bookingDetail)
