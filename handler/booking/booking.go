@@ -28,10 +28,10 @@ type BookingDetail struct {
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	bookingLogFile, err := os.OpenFile("../../../data/booking_log.csv", os.O_APPEND|os.O_WRONLY, os.ModePerm)
+	bookingLogFile, err := os.OpenFile("../../data/booking_log.csv", os.O_APPEND|os.O_WRONLY, os.ModePerm)
 
 	if err != nil {
-		bookingLogFile, err = os.OpenFile("../../../data/booking_log.csv", os.O_CREATE|os.O_WRONLY, os.ModePerm)
+		bookingLogFile, err = os.OpenFile("../../data/booking_log.csv", os.O_CREATE|os.O_WRONLY, os.ModePerm)
 		if err != nil {
 			panic(err)
 		}
